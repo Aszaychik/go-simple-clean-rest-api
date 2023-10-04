@@ -1,9 +1,9 @@
 package helper
 
 import (
+	"Aszaychik/go-simple-clean-rest-api/model/web"
 	"os"
 	"time"
-	"unit_testing/model/web"
 
 	"github.com/golang-jwt/jwt/v5"
 )

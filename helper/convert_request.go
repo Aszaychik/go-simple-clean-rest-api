@@ -1,8 +1,8 @@
 package helper
 
 import (
-	"unit_testing/model/domain"
-	"unit_testing/model/web"
+	"Aszaychik/go-simple-clean-rest-api/model/domain"
+	"Aszaychik/go-simple-clean-rest-api/model/web"
 )
 
 func UserCreateRequestToUserDomain(request web.UserCreateRequest) *domain.User {
