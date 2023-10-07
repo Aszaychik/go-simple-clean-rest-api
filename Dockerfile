@@ -1,29 +1,29 @@
-#build stage
-FROM golang:1.20-alpine AS builder
-RUN apk add --no-cache git
-WORKDIR /go/src/app
-COPY . .
-COPY .env .env
-ENV DB_USERNAME="${DB_USERNAME}"
-ENV DB_PASSWORD="${DB_PASSWORD}"
-ENV DB_PORT="${DB_PORT}"
-ENV DB_HOST="${DB_HOST}"
-ENV DB_NAME="${DB_NAME}"
-ENV JWT_SECRET="${JWT_SECRET}"
-RUN go get -d -v ./...
-RUN go build -o /go/bin/app -v ./...
+# Use the official Golang image as the base image
+FROM golang:1.20
 
-#final stage
-FROM alpine:latest
-RUN apk --no-cache add ca-certificates
-COPY --from=builder /go/bin/app /app
-COPY --from=builder /app/.env /app/.env
-ENV DB_USERNAME="${DB_USERNAME}"
-ENV DB_PASSWORD="${DB_PASSWORD}"
-ENV DB_PORT="${DB_PORT}"
-ENV DB_HOST="${DB_HOST}"
-ENV DB_NAME="${DB_NAME}"
-ENV JWT_SECRET="${JWT_SECRET}"
-ENTRYPOINT /app
-LABEL Name=gosimplecleanrestapi Version=0.0.1
+# Copy the necessary files into the container
+COPY . /app
+
+# Set the working directory inside the container
+WORKDIR /app
+
+RUN go mod tidy
+
+# Build the Go application
+RUN go build -o app .
+
+# Database configuration
+ENV DB_USERNAME=root
+ENV DB_PASSWORD=
+ENV DB_PORT=3306
+ENV DB_HOST=localhost
+ENV DB_NAME=go_simple_clean_rest_api
+
+# JWT secret
+ENV JWT_SECRET=kayokoonikata
+
+# Expose the port that your API will run on
 EXPOSE 8080
+
+# Run the application
+CMD ["/app/app"]
