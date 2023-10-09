@@ -12,10 +12,10 @@ import (
 var DB *gorm.DB
 
 func InitConfig() (*gorm.DB, error) {
-	err := godotenv.Load() 
-	if err != nil {
-		panic(err)
-	}
+	godotenv.Load() 
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed to load environment variables: %w", err)
+	// }
 
 	return initDB()
 }
