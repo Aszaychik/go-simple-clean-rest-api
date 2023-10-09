@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy the necessary files into the container
 COPY . .
 
-# Copy the .env file into the container
-COPY .env .
-
 # Build the Go application
 RUN go build -o main .
 
