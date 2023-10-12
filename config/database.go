@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -11,10 +12,13 @@ import (
 var DB *gorm.DB
 
 func InitConfig() (*gorm.DB, error) {
-	// godotenv.Load() 
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to load environment variables: %w", err)
-	// }
+	_, err := os.Stat(".env")
+	if err == nil {
+		err := godotenv.Load()
+		if err != nil {
+			return nil, fmt.Errorf("failed to load environment variables from .env file: %w", err)
+		}
+	}
 
 	return initDB()
 }
